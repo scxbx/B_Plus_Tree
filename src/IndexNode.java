@@ -30,7 +30,7 @@ public class IndexNode extends Node{
 	
 	public String toString() {
 		//return "Node [parent="+getParent()+", value="+getValues()+", children"+getChildren()+"]";
-		return "Node [value="+getValues()+", children="+getChildren()+ ", parent=" + getParentValues() + "]";
+		return "Node [value="+getValues()+", children="+getChildren() + "]";
 	}
 	private List<Integer> getParentValues() {
 		if (super.getParent() == null)

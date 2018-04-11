@@ -35,7 +35,7 @@ public class LeafNode extends Node{
 	
 	public String toString() {
 		//return "Node [parent="+getParent()+", value="+getValues()+", children"+getChildren()+"]";
-		return "LeafNode [value="+getValues()+", parent=" + getParentValues() + "]";
+		return "LeafNode [value="+getValues()+ "]";
 	}
 	private List<Integer> getParentValues() {
 		if (super.getParent() == null)
