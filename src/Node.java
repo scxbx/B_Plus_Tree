@@ -1,9 +1,15 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Node {
 	private Node parent;
 	private List<Integer> values;
+	
+	public Node() {
+		values = new ArrayList<Integer>();
+		parent = null;
+	}
 	
 	public Node getParent() {
 		return parent;
@@ -25,8 +31,8 @@ public class Node {
 		for (int i = 0; i < this.values.size(); i++) {
 			if (this.getValues().get(i) >= low) {
 				lowIndex = i;
+				break;
 			}
-			break;
 		}
 		
 		list.addAll(lowIndex, this.getValues());
@@ -35,7 +41,6 @@ public class Node {
 	
 	public List<Integer> getSmaller(int high) {
 		List<Integer> list = new ArrayList<Integer>();
-		int highIndex = 0;
 		
 		for (int i = 0; i < this.values.size(); i++) {
 			if (this.getValues().get(i) <= high) {
@@ -45,5 +50,13 @@ public class Node {
 		
 		return list;
 	}
-
+	
+	public String toString() {
+		//return "Node [parent="+getParent()+", value="+getValues()+"]";
+		return "Node [value="+getValues()+"]";
+	}
+//	public static void main(String[] args) {
+//		ArrayList<Integer> list = new ArrayList<Integer>();
+//		System.out.println(list.size());
+//	}
 }
