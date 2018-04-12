@@ -6,9 +6,15 @@ public class Tree {
 	private Node root;
 	static final int fan_out = 5;
 	private int nodeNum;
+	private int dataNum;
+	private int indexNum;
+	private int indexSpaceNum;
 	
 	public Tree() {
 		nodeNum = 0;
+		dataNum = 0;
+		indexNum = 0;
+		indexSpaceNum = 0;
 	}
 	
 	public Node searchNode(int value) {                           // seek leafNode from root
@@ -202,9 +208,13 @@ public class Tree {
 					rightChild.setParent(parent);
 					
 					Node flag = leaf.getParent();
-					
+					Node oldFlag = null;
 					do {
 						if (flag == root) {
+//							p("214");
+//							p(flag);
+//							p(root);
+							
 							/*------------------------------------------------------------------------------------*/
 							/*	push up 	no parent	*/
 							/*------------------------------------------------------------------------------------*/
@@ -218,6 +228,7 @@ public class Tree {
 								((IndexNode)root).getChildren().get(i).setParent(leftChild);
 							}
 							for (int i = fan_out / 2 + 1; i < fan_out + 1; i++) {
+								p(i);
 								((IndexNode)rightChild).getChildren().add(((IndexNode)root).getChildren().get(i));
 								((IndexNode)root).getChildren().get(i).setParent(rightChild);
 							}
@@ -253,6 +264,10 @@ public class Tree {
 							root.setValues(rList);
 							/*------------------------------------------------------------------------------------*/
 						} else {
+							p("267");
+							p(flag);
+							p(root);
+							
 							parent = flag.getParent();
 							rightChild = new IndexNode();
 							leftChild = new IndexNode();
@@ -279,11 +294,14 @@ public class Tree {
 							}
 							parent.getValues().add(p_loc, flag.getValues().get(fan_out/2));  // push up
 							
-							
-							//for parent, set children
+
+							//for parent, remove original children and set new children
 							posi = ((IndexNode) parent).getChildren().indexOf(flag);
+							((IndexNode)parent).getChildren().remove(posi);
 							((IndexNode)parent).getChildren().add(posi, leftChild);   // add it at leaf's position
 							((IndexNode)parent).getChildren().add(posi + 1, rightChild);  // add it at leaf's position+1
+							
+							
 							
 							
 							//for rightChild and leftChild, set parent
@@ -299,13 +317,29 @@ public class Tree {
 							for(int i=fan_out/2 + 1; i< fan_out; i++) {
 								rightChild.getValues().add(flag.getValues().get(i));
 							}
+							
+//							p("317");
+//							p("flag:" + flag);
+//							p("root:" + root);
+//							p("parent: " + parent);
+//							p(flag.getParent());
 						}
 						
 						
+//						p("328");
+//						p("flag" + flag);
+//						p("flag.getParent()" + flag.getParent());
 						
-						
+						oldFlag = flag;
 						flag = flag.getParent();
-					} while(isFull(flag));
+						
+//						p("332");
+//						p(flag);
+						
+						
+//						p("parent: " + parent);
+//						p(this);
+					} while(isOverFlow(flag));
 					
 					
 					
@@ -430,6 +464,14 @@ public class Tree {
 		return aNode.getValues().size() >= fan_out-1;
 	}
 	
+	private boolean isOverFlow(Node aNode) {
+		if(aNode == null)
+			return false;
+		if(aNode.getValues() == null)
+			return false;
+		return aNode.getValues().size() > fan_out-1;
+	}
+	
 	
 	public void print() {
 		System.out.println(this.toString());
@@ -444,89 +486,169 @@ public class Tree {
 		tree.root = new LeafNode();
 		
 		tree.insert(4);
-		 
-		tree.insert(12);
-		 
-		tree.insert(16);
-		 
-		tree.insert(6);
-		 
-		tree.insert(18);
-		 
-		tree.insert(8);
-		 
-		tree.insert(9);
-		 
-		tree.insert(5);
-		 
-		tree.insert(10);
-		 
-		tree.insert(11);
-		 
-		tree.insert(19);
-		 
-		tree.insert(20);
-		 
-		tree.insert(21);
-		 
-		tree.insert(22);
-		 
-		tree.insert(2);
-		tree.insert(23);
-		tree.insert(24);
-		tree.insert(25);
-		tree.insert(26);
-		tree.insert(27);
-		//tree.insert(28);
-		//tree.insert(29);
-		//tree.insert(30);
-		//tree.insert(31);
 		tree.print();
+		tree.insert(12);
+		tree.print();
+		tree.insert(16);
+		tree.print(); 
+		tree.insert(6);
+		tree.print(); 
+		tree.insert(18);
+		tree.print(); 
+		tree.insert(8);
+		tree.print();
+		tree.insert(9);
+		tree.print();
+		tree.insert(5);
+		tree.print(); 
+		tree.insert(10);
+		tree.print(); 
+		tree.insert(11);
+		tree.print(); 
+		tree.insert(19);
+		tree.print();
+		tree.insert(20);
+		tree.print(); 
+		tree.insert(21);
+		tree.print(); 
+		tree.insert(22);
+		tree.print(); 
+		tree.insert(2);
+		tree.print();
+//		tree.insert(23);
+//		tree.insert(24);
+//		tree.insert(25);
+//		tree.insert(26);
+//		tree.insert(27);
+//		tree.insert(28);
+//		tree.insert(29);
+//		tree.insert(30);
+//		tree.insert(31);
+//		tree.insert(32);
 		
-		Node lowNode = tree.searchNode(10);
-		p(lowNode);
-		Node highNode = tree.searchNode(15);
-		p(highNode);
+		int ceiling = 46;
+		for (int i = 23; i <= ceiling; i++) {
+			p(i);
+			tree.insert(i);
+			tree.print();
+		}
 		
-		tree.printInorder(tree.root);
-		p(tree.nodeNum(tree.root));
+		
+//		Node lowNode = tree.searchNode(10);
+//		p(lowNode);
+//		Node highNode = tree.searchNode(15);
+//		p(highNode);
+		
+//		tree.printInorder(tree.root);
+//		p(tree.nodeNum(tree.root));
+		
+		
+		
+//		tree.dataNum = 0;
+//		tree.indexNum = 0;
+//		tree.nodeNum = 0;
+//		
+//		tree.traversal(tree.root);
+//		
+//		p("node: " + tree.nodeNum);
+//		p("data: " + tree.dataNum);
+//		p("index: " +tree.indexNum);
+		
+		p("height: " + tree.getHeight());
+		
+		p("node: " + tree.getNodeNum());
+		p("data " + tree.getDataNum());
+		p("index: " + tree.getIndexNum());
+		p("fill factor: " + tree.getFillFactor());
 	}
 
 	
-	public void printInorder(Node cNode) {
-		if (cNode == null) {
-			return;
-		}
-		System.out.println(cNode.getValues());
-		if (cNode.getClass().equals((new LeafNode()).getClass())) {
-			
-			return;
-		}
-		//System.out.println(cNode.getValues());
-		for (int i = 0; i < ((IndexNode)cNode).getChildren().size(); i++) {
-			
-			printInorder(((IndexNode)cNode).getChildren().get(i));
-		}
-		
-		
-	}
+//	public void printInorder(Node cNode) {
+//		if (cNode == null) {
+//			return;
+//		}
+//		System.out.println(cNode.getValues());
+//		if (cNode.getClass().equals((new LeafNode()).getClass())) {
+//			
+//			return;
+//		}
+//		//System.out.println(cNode.getValues());
+//		for (int i = 0; i < ((IndexNode)cNode).getChildren().size(); i++) {
+//			
+//			printInorder(((IndexNode)cNode).getChildren().get(i));
+//		}
+//		
+//		
+//	}
+//	
+//	public int nodeNum(Node cNode) {
+//		
+//		if (cNode == null) {
+//			return nodeNum;
+//		}
+//		nodeNum++;
+//		if (cNode.getClass().equals((new LeafNode()).getClass())) {
+//			return nodeNum;
+//		}
+//		
+//		for (int i = 0; i < ((IndexNode)cNode).getChildren().size(); i++) {
+//			nodeNum(((IndexNode)cNode).getChildren().get(i));
+//		}
+//		return nodeNum;
+//	}
 	
-	public int nodeNum(Node cNode) {
-		
-		if (cNode == null) {
-			return nodeNum;
+	public void traversal(Node node) {
+		if (node == null) {
+			return;
 		}
 		nodeNum++;
-		if (cNode.getClass().equals((new LeafNode()).getClass())) {
-			return nodeNum;
+		if (node.getClass().equals((new LeafNode()).getClass())) {
+			dataNum += node.getValues().size();
+			return;
 		}
-		
-		for (int i = 0; i < ((IndexNode)cNode).getChildren().size(); i++) {
-			nodeNum(((IndexNode)cNode).getChildren().get(i));
+		indexNum += ((IndexNode)node).getValues().size();
+//		indexSpaceNum += ((IndexNode)node).getValues().size();
+		for (int i = 0; i < ((IndexNode)node).getChildren().size(); i++) {
+			
+			traversal(((IndexNode)node).getChildren().get(i));
 		}
-		return nodeNum;
 	}
 	
+	public int getIndexNum() {
+		this.indexNum = 0;
+		this.traversal(this.root);
+		return this.indexNum;
+	}
 	
+	public int getNodeNum() {
+		this.nodeNum = 0;
+		this.traversal(this.root);
+		return this.nodeNum;
+	}
 	
+	public int getDataNum() {
+		this.dataNum = 0;
+		this.traversal(this.root);
+		return this.dataNum;
+	}
+	
+	public int getIndexSpaceNum() {
+		this.indexSpaceNum = 0;
+		this.traversal(root);
+		return this.indexSpaceNum;
+	}
+	
+	public int getHeight() {
+		Node node = root;
+		int height = 0;
+		while (node != null && (!node.getClass().equals((new LeafNode()).getClass()))) {
+			height++;
+			node = ((IndexNode)node).getChildren().get(0);
+		}
+		return height;
+	}
+	
+	public double getFillFactor() {
+		return ((double)(this.getIndexNum() + this.getDataNum())) / ((double)this.getNodeNum() * 4);
+	}
 }
